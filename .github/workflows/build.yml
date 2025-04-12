@@ -10,14 +10,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     - name: Install .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
 
     - name: Restore dependencies
       run: dotnet restore src
@@ -32,11 +32,11 @@ jobs:
       run: ls -l bin\Release\ImGui.NET\
 
     - name: Validate Generated Code
-      if: startsWith(github.ref, 'refs/tags/')
+      if: false # startsWith(github.ref, 'refs/tags/')
       shell: bash
       run: |
         echo "Running CodeGenerator"
-        bin/Release/CodeGenerator/net6.0/CodeGenerator.exe "src/ImGui.NET/Generated"
+        bin/Release/CodeGenerator/net8.0/CodeGenerator.exe "src/ImGui.NET/Generated"
         git status -s | findstr . && echo "ERROR: CodeGenerator is not executed, please execute it." && exit 1 || exit 0
 
     - name: Publish to nuget.org

@@ -56,6 +56,7 @@ namespace CodeGenerator
             { "ImPlotGetter", "IntPtr" },
             { "ImPlotTransform", "IntPtr" },
             { "ImGuiKeyChord", "ImGuiKey" },
+            { "ImGuiSelectionUserData", "long" },
         };
         
         public static readonly List<string> WellKnownEnums = new List<string>()
@@ -158,7 +159,6 @@ namespace CodeGenerator
         {
             "igInputText",
             "igInputTextMultiline",
-            "igCalcTextSize",
             "igInputTextWithHint"
         };
     }

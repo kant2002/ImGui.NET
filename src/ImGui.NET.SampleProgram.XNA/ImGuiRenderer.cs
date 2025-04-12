@@ -258,12 +258,12 @@ namespace ImGuiNET.SampleProgram.XNA
                 Keys.Subtract => ImGuiKey.KeypadSubtract,
                 Keys.Decimal => ImGuiKey.KeypadDecimal,
                 Keys.Divide => ImGuiKey.KeypadDivide,
-                >= Keys.F1 and <= Keys.F12 => ImGuiKey.F1 + (key - Keys.F1),
+                >= Keys.F1 and <= Keys.F24 => ImGuiKey.F1 + (key - Keys.F1),
                 Keys.NumLock => ImGuiKey.NumLock,
                 Keys.Scroll => ImGuiKey.ScrollLock,
-                Keys.LeftShift or Keys.RightShift => ImGuiKey.ModShift,
-                Keys.LeftControl or Keys.RightControl => ImGuiKey.ModCtrl,
-                Keys.LeftAlt or Keys.RightAlt => ImGuiKey.ModAlt,
+                Keys.LeftShift => ImGuiKey.ModShift,
+                Keys.LeftControl => ImGuiKey.ModCtrl,
+                Keys.LeftAlt => ImGuiKey.ModAlt,
                 Keys.OemSemicolon => ImGuiKey.Semicolon,
                 Keys.OemPlus => ImGuiKey.Equal,
                 Keys.OemComma => ImGuiKey.Comma,
@@ -275,6 +275,8 @@ namespace ImGuiNET.SampleProgram.XNA
                 Keys.OemCloseBrackets => ImGuiKey.RightBracket,
                 Keys.OemPipe => ImGuiKey.Backslash,
                 Keys.OemQuotes => ImGuiKey.Apostrophe,
+                Keys.BrowserBack => ImGuiKey.AppBack,
+                Keys.BrowserForward => ImGuiKey.AppForward,
                 _ => ImGuiKey.None,
             };
 
@@ -293,6 +295,10 @@ namespace ImGuiNET.SampleProgram.XNA
             // Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, vertex/texcoord/color pointers
             var lastViewport = _graphicsDevice.Viewport;
             var lastScissorBox = _graphicsDevice.ScissorRectangle;
+            var lastRasterizer = _graphicsDevice.RasterizerState;
+            var lastDepthStencil = _graphicsDevice.DepthStencilState;
+            var lastBlendFactor = _graphicsDevice.BlendFactor;
+            var lastBlendState = _graphicsDevice.BlendState;
 
             _graphicsDevice.BlendFactor = Color.White;
             _graphicsDevice.BlendState = BlendState.NonPremultiplied;
@@ -312,6 +318,10 @@ namespace ImGuiNET.SampleProgram.XNA
             // Restore modified state
             _graphicsDevice.Viewport = lastViewport;
             _graphicsDevice.ScissorRectangle = lastScissorBox;
+            _graphicsDevice.RasterizerState = lastRasterizer;
+            _graphicsDevice.DepthStencilState = lastDepthStencil;
+            _graphicsDevice.BlendState = lastBlendState;
+            _graphicsDevice.BlendFactor = lastBlendFactor;
         }
 
         private unsafe void UpdateBuffers(ImDrawDataPtr drawData)
@@ -346,7 +356,7 @@ namespace ImGuiNET.SampleProgram.XNA
 
             for (int n = 0; n < drawData.CmdListsCount; n++)
             {
-                ImDrawListPtr cmdList = drawData.CmdListsRange[n];
+                ImDrawListPtr cmdList = drawData.CmdLists[n];
 
                 fixed (void* vtxDstPtr = &_vertexData[vtxOffset * DrawVertDeclaration.Size])
                 fixed (void* idxDstPtr = &_indexData[idxOffset * sizeof(ushort)])
@@ -374,7 +384,7 @@ namespace ImGuiNET.SampleProgram.XNA
 
             for (int n = 0; n < drawData.CmdListsCount; n++)
             {
-                ImDrawListPtr cmdList = drawData.CmdListsRange[n];
+                ImDrawListPtr cmdList = drawData.CmdLists[n];
 
                 for (int cmdi = 0; cmdi < cmdList.CmdBuffer.Size; cmdi++)
                 {

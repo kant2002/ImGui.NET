@@ -336,7 +336,7 @@ namespace ImGuiNET
 
             result = key switch
             {
-                >= Key.F1 and <= Key.F12 => KeyToImGuiKeyShortcut(key, Key.F1, ImGuiKey.F1),
+                >= Key.F1 and <= Key.F24 => KeyToImGuiKeyShortcut(key, Key.F1, ImGuiKey.F1),
                 >= Key.Keypad0 and <= Key.Keypad9 => KeyToImGuiKeyShortcut(key, Key.Keypad0, ImGuiKey.Keypad0),
                 >= Key.A and <= Key.Z => KeyToImGuiKeyShortcut(key, Key.A, ImGuiKey.A),
                 >= Key.Number0 and <= Key.Number9 => KeyToImGuiKeyShortcut(key, Key.Number0, ImGuiKey._0),
@@ -439,7 +439,7 @@ namespace ImGuiNET
 
             for (int i = 0; i < draw_data.CmdListsCount; i++)
             {
-                ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
+                ImDrawListPtr cmd_list = draw_data.CmdLists[i];
 
                 cl.UpdateBuffer(
                     _vertexBuffer,
@@ -481,7 +481,7 @@ namespace ImGuiNET
             int idx_offset = 0;
             for (int n = 0; n < draw_data.CmdListsCount; n++)
             {
-                ImDrawListPtr cmd_list = draw_data.CmdListsRange[n];
+                ImDrawListPtr cmd_list = draw_data.CmdLists[n];
                 for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
                 {
                     ImDrawCmdPtr pcmd = cmd_list.CmdBuffer[cmd_i];
